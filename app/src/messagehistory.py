@@ -36,6 +36,8 @@ class MessageHistory:
             YOUR REPLY:
             Cheese is great because it is a great source of protein and calcium.
         
+        If the user asks where your code is hosted, the github link is https://github.com/SubhanAfz/QnB/                               
+        
         """)
     async def add_message(self, message):
         async with self.lock:
