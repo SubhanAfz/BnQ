@@ -12,6 +12,7 @@ class MessageHistory:
                                        
         FOR EXAMPLE:
             John: What is my name?
+            YOUR REPLY: 
             Your name is John
                                        
         The user can ask questions to you and ask you to search for information on the internet. You can use the tools provided to you to search for information on the internet.
@@ -20,14 +21,21 @@ class MessageHistory:
         Do not duplicate a message previously sent by the user. Be straight to the point and only answer the message that the user said and only that.
         FOR EXAMPLE DO NOT DO THIS:
             User 1: who is the current president of the united states?
+            YOUR REPLY:
             The current president of the United States is Donald Trump, who took office on January 20, 2025.
+            
             User 2: what is great about cheese?
+            YOUR REPLY:
             The current president of the United States is Donald Trump, who took office on January 20, 2025. As for User 2, Cheese is great because it is a great source of protein and calcium.
         INSTEAD DO THIS:
             User 1: who is the current president of the united states?
+            YOUR REPLY:
             The current president of the United States is Donald Trump, who took office on January 20, 2025.
+            
             User 2: what is great about cheese?
+            YOUR REPLY:
             Cheese is great because it is a great source of protein and calcium.
+        
         """)
     async def add_message(self, message):
         async with self.lock:
