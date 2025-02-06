@@ -31,6 +31,7 @@ system_prompt = """
         If the user asks for "current" information, you should search on the internet for the most recent information available.
         If the user asks where your code is hosted, the github link is https://github.com/SubhanAfz/QnB/                               
         """
+
 answers = []
 for question in questions:
     print(question)
@@ -41,10 +42,11 @@ for question in questions:
             break
         response.append(line)
     answers.append("\n".join(response))
+    print(answers)
 
 all_convos = []
 for i in range(len(questions)):
-    all_convos.append({"messages" : [{"role" : "system", "content": system_prompt}, {"role" : "user", "content": question[i]}, {"role" : "assistant", "content": answers[i]}]})
+    all_convos.append({"messages" : [{"role" : "system", "content": system_prompt}, {"role" : "user", "content": questions[i]}, {"role" : "assistant", "content": answers[i]}]})
 
 import json
 with open('data.json', "w") as f:
