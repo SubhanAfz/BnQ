@@ -7,6 +7,7 @@ import re
 import os
 from messagehistory import MessageHistory
 from langchain_openai import ChatOpenAI
+import asyncio
 history = MessageHistory()
 logger = logging.getLogger('discord')
 intents = discord.Intents.default()
@@ -46,6 +47,7 @@ async def on_message(message):
         memed_output = await memify(cleaned_content, output["messages"][-1].content)
         for m in memed_output.content.splitlines():
             await message.channel.send(m)
+            await asyncio.sleep(1)
 
         new_messages = output["messages"][history_length:]
         i = 0
