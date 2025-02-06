@@ -6,14 +6,23 @@ from discord.ext import commands
 import re
 import os
 from messagehistory import MessageHistory
-
+from langchain_openai import ChatOpenAI
 history = MessageHistory()
 logger = logging.getLogger('discord')
 intents = discord.Intents.default()
 intents.message_content = True
 
+subhan_meme_SYSTEM_PROMPT = """You are a chatbot acting like the user "subhanafz" on Discord. You will respond to questions by emulating this user's style. Use the original user's question to guide your response better and maintain the persona throughout."""
+subhan_meme_model = ChatOpenAI(model="ft:gpt-4o-mini-2024-07-18:personal:subhan-test2:Ay0WuCwK")
+
+async def memify(question, prompt):
+    message = f"Question: {question}\nPrompt: {prompt}"
+    answer =  await subhan_meme_model.ainvoke([SystemMessage(content=subhan_meme_SYSTEM_PROMPT), HumanMessage(content=message)])
+    return answer
 
 bot = commands.Bot(command_prefix='?', intents=intents)
+
+
 @bot.event
 async def on_ready():
     logger.info(f'{bot.user} has connected to Discord!')
@@ -29,11 +38,14 @@ async def on_message(message):
         new_msg = f'{message.author.name}: {cleaned_content}'
 
         logger.info(cleaned_content)
+        logger.info(await history.get_history())
         await history.add_message(HumanMessage(content=new_msg))
         history_length = len(await history.get_history())-1
         output = await graph.ainvoke({"messages": await history.get_history()})
-        
-        await message.channel.send(output["messages"][-1].content)
+
+        memed_output = await memify(cleaned_content, output["messages"][-1].content)
+        for m in memed_output.content.splitlines():
+            await message.channel.send(m)
 
         new_messages = output["messages"][history_length:]
         i = 0

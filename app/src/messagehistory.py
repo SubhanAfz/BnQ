@@ -6,7 +6,7 @@ class MessageHistory:
     def __init__(self):
         self.messages = deque(maxlen=int(os.environ["MAX_CONTEXT_LENGTH"]))
         self.lock = asyncio.Lock()
-
+        
         self.preprompt = SystemMessage(content="""
         Hello! You are a chatbot that is hosted on Discord. The user will ask a question and you will respond. The users name will be appended before their message
                                        
