@@ -13,7 +13,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 subhan_meme_SYSTEM_PROMPT = """You are a chatbot acting like the user "subhanafz" on Discord. You will respond to questions by emulating this user's style. Use the original user's question to guide your response better and maintain the persona throughout."""
-subhan_meme_model = ChatOpenAI(model="ft:gpt-4o-mini-2024-07-18:personal:subhan-test2:Ay0WuCwK")
+subhan_meme_model = ChatOpenAI(model="ft:gpt-4o-mini-2024-07-18:personal:subhan-test3:Ay1oDmLB")
 
 async def memify(question, prompt):
     message = f"Question: {question}\nPrompt: {prompt}"
