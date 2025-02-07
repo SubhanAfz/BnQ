@@ -2,13 +2,15 @@ import requests
 import os
 from bs4 import BeautifulSoup
 from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 from datetime import datetime
 from urllib.parse import urlparse, urljoin
-model = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+#model = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+model = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0)
 @tool
-def google_search(query):
+def google_search(query: str) -> str:
     """
     Searches using Google Custom JSON Search API and returns a formatted string of the results, and each result could contain the following:
     - Title (If there is no title it will show "No title" instead)
@@ -19,7 +21,7 @@ def google_search(query):
     url = "https://www.googleapis.com/customsearch/v1"
     params = {
         'q' : query,
-        'key' : os.environ['GOOGLE_API_KEY'],
+        'key' : os.environ['GOOGLE_SEARCH_API_KEY'],
         'cx': os.environ['GOOGLE_SEARCH_ENGINE_ID']
     }
     response = requests.get(url, params=params)
@@ -34,8 +36,8 @@ def google_search(query):
         return "\n".join(results)
     else:
         return "No results found"
-
-def get_content_of_url(url):
+@tool
+def get_content_of_url(url: str) -> str:
     """
     Get the content of a webpage by sending a GET request to the URL and returning
     the text content of the page in Markdown format. Anchor tags are converted into
@@ -65,7 +67,7 @@ def get_content_of_url(url):
     return markdown_text
 
 @tool
-def get_date_and_time():
+def get_date_and_time() -> str:
     """
     Get the current weekday, date and time in the format "Weekday DD-MM-YY HH:MM:SS (Time is in 24hr format)"
     """
