@@ -1,6 +1,7 @@
 services:
   app:
     build: .
+    container_name: QnB
     volumes:
       - ./app/logs:/app/logs
     env_file:
