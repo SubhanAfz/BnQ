@@ -1,5 +1,5 @@
 services:
-  app:
+  app-sub_bot:
     build: .
     volumes:
       - ./app/logs:/app/logs
