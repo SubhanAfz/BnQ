@@ -1,19 +1,13 @@
 import logging
 from agent import graph
-import discord
 from langchain_core.messages import HumanMessage, AIMessage, ToolMessage, SystemMessage
-from discord.ext import commands
 import re
 import os
 from messagehistory import MessageHistory
-
+from botinstance import bot
 history = MessageHistory()
 logger = logging.getLogger('discord')
-intents = discord.Intents.default()
-intents.message_content = True
 
-
-bot = commands.Bot(command_prefix='?', intents=intents)
 @bot.event
 async def on_ready():
     logger.info(f'{bot.user} has connected to Discord!')
@@ -24,9 +18,15 @@ async def on_message(message):
         return
     if bot.user in message.mentions:
         logger.info("mentioned!!")
-        cleaned_content = re.sub(r"<@!?\d+>", "", message.content).strip()
+        cleaned_content = re.sub(fr"<@{bot.user.id}>", "", message.content).strip()
 
-        new_msg = f'{message.author.name}: {cleaned_content}'
+        new_msg=None
+        if message.guild:
+            new_msg = f"""Guild ID: {message.guild.id}
+            Message: ({message.author.name}: {cleaned_content})"""
+        else:
+            new_msg = f"""Guild ID: NULL
+            Message: ({message.author.name}: {cleaned_content})"""
 
         logger.info(cleaned_content)
         await history.add_message(HumanMessage(content=new_msg))
@@ -56,7 +56,6 @@ async def on_message(message):
         
         logger.info(f'length: {len(await history.get_history())-1}')
         logger.info(f'history: {await history.get_history()}')
-    await bot.process_commands(message)
 
 
 bot.run(os.environ['DISCORD_BOT_TOKEN'])

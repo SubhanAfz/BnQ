@@ -36,8 +36,10 @@ class MessageHistory:
             YOUR REPLY:
             Cheese is great because it is a great source of protein and calcium.
         
-        If the user asks where your code is hosted, the github link is https://github.com/SubhanAfz/QnB/                               
-        
+        If the user asks where your code is hosted, the github link is https://github.com/SubhanAfz/QnB/
+
+        For your knowledge, when a user mentions another user they write it in this format: <@user_id>, where user_id is an integer.
+        Also, the guild (Also known as a discord server) ID where the message came from is also appended to the message and the username of the author of the message for your information.
         """)
     async def add_message(self, message):
         async with self.lock:
