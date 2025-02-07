@@ -1,6 +1,7 @@
 services:
   app-sub_bot:
     build: .
+    container_name: QnB-sub-bot
     volumes:
       - ./app/logs:/app/logs
     env_file:
