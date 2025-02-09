@@ -1,18 +1,15 @@
 import logging
 from agent import graph
-import discord
 from langchain_core.messages import HumanMessage, AIMessage, ToolMessage, SystemMessage
-from discord.ext import commands
 import re
 import os
 from messagehistory import MessageHistory
 from langchain_openai import ChatOpenAI
 import asyncio
 import random
+from botinstance import bot
 history = MessageHistory()
 logger = logging.getLogger('discord')
-intents = discord.Intents.default()
-intents.message_content = True
 
 subhan_meme_SYSTEM_PROMPT = """You are a chatbot acting like the user "subhanafz" on Discord. You will respond to questions by emulating this user's style. Use the original user's question to guide your response better and maintain the persona throughout."""
 subhan_meme_model = ChatOpenAI(model="ft:gpt-4o-mini-2024-07-18:personal:subhan-test3:Ay1oDmLB")
@@ -22,7 +19,6 @@ async def memify(question, prompt):
     answer =  await subhan_meme_model.ainvoke([SystemMessage(content=subhan_meme_SYSTEM_PROMPT), HumanMessage(content=message)])
     return answer
 
-bot = commands.Bot(command_prefix='?', intents=intents)
 
 
 @bot.event
@@ -35,9 +31,15 @@ async def on_message(message):
         return
     if bot.user in message.mentions:
         logger.info("mentioned!!")
-        cleaned_content = re.sub(r"<@!?\d+>", "", message.content).strip()
+        cleaned_content = re.sub(fr"<@{bot.user.id}>", "", message.content).strip()
 
-        new_msg = f'{message.author.name}: {cleaned_content}'
+        new_msg=None
+        if message.guild:
+            new_msg = f"""Guild ID: {message.guild.id}
+            Message: ({message.author.name}: {cleaned_content})"""
+        else:
+            new_msg = f"""Guild ID: NULL
+            Message: ({message.author.name}: {cleaned_content})"""
 
         logger.info(cleaned_content)
         logger.info(await history.get_history())
@@ -71,7 +73,6 @@ async def on_message(message):
         
         logger.info(f'length: {len(await history.get_history())-1}')
         logger.info(f'history: {await history.get_history()}')
-    await bot.process_commands(message)
 
 
 bot.run(os.environ['DISCORD_BOT_TOKEN'])
