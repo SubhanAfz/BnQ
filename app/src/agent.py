@@ -11,7 +11,7 @@ from botinstance import bot
 import re
 
 #model = ChatOpenAI(model="gpt-4o-mini", temperature=0)
-model = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0)
+model = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.3)
 
 """
     Non-Discord agentic tools
