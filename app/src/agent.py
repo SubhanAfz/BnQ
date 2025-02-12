@@ -10,7 +10,7 @@ from urllib.parse import urlparse, urljoin
 from botinstance import bot
 import re
 
-model = ChatOpenAI(model="o1-mini", temperature=0)
+model = ChatOpenAI(model="o1-mini")
 #model = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.3)
 
 """
