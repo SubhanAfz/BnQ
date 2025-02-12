@@ -10,8 +10,8 @@ from urllib.parse import urlparse, urljoin
 from botinstance import bot
 import re
 
-#model = ChatOpenAI(model="gpt-4o-mini", temperature=0)
-model = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.3)
+model = ChatOpenAI(model="o1-mini", temperature=0)
+#model = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.3)
 
 """
     Non-Discord agentic tools
