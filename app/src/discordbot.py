@@ -5,6 +5,7 @@ import re
 import os
 from messagehistory import MessageHistory
 from botinstance import bot
+import json
 history = MessageHistory()
 logger = logging.getLogger('discord')
 
@@ -20,13 +21,21 @@ async def on_message(message):
         logger.info("mentioned!!")
         cleaned_content = re.sub(fr"<@{bot.user.id}>", "", message.content).strip()
 
-        new_msg=None
+
+        
         if message.guild:
-            new_msg = f"""Guild ID: {message.guild.id}
-            Message: ({message.author.name}: {cleaned_content})"""
+            payload = {
+                "guild_id": message.guild.id,
+                "username" : message.author.name,
+                "message" : cleaned_content
+            }
         else:
-            new_msg = f"""Guild ID: NULL
-            Message: ({message.author.name}: {cleaned_content})"""
+            payload = {
+                "guild_id": None,
+                "username" : message.author.name,
+                "message" : cleaned_content
+            }
+        new_msg=json.dumps(payload)
 
         logger.info(cleaned_content)
         await history.add_message(HumanMessage(content=new_msg))
