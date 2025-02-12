@@ -38,14 +38,14 @@ class MessageHistory:
             Your Reply: "Your name is John."
 
             Remember, be direct, concise, and answer only what is asked.
-        """)
+        """, additional_kwargs={"__openai_role__": "developer"})
     async def add_message(self, message):
         async with self.lock:
             self.messages.append(message)
     async def get_history(self):
         async with self.lock:
             flattened = []
-            flattened.append(self.preprompt)
+            #flattened.append(self.preprompt)
             for unit in self.messages:
                 if isinstance(unit, tuple):
                     flattened.extend(unit)
