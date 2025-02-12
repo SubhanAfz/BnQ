@@ -44,7 +44,7 @@ class MessageHistory:
     async def get_history(self):
         async with self.lock:
             flattened = []
-            #flattened.append(self.preprompt)
+            flattened.append(self.preprompt)
             for unit in self.messages:
                 if isinstance(unit, tuple):
                     flattened.extend(unit)
